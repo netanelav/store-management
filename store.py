@@ -17,7 +17,7 @@ def get_categories():
         with connection.cursor() as cursor:
             sql = "select * from category"
             cursor.execute(sql)
-            return json.dumps(cursor.fetchall())
+            return json.dumps({"CATEGORIES": cursor.fetchall()})
     except Exception as e:
         return json.dumps({'error': f'error with the db: {e}'})
 
