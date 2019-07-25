@@ -21,9 +21,10 @@ def get_categories():
     except Exception as e:
         return json.dumps({'error': f'error with the db: {e}'})
 
+
 @post("/category")
 def add_category():
-    name = request.json.get("name")
+    name = request.forms.get("name")
     try:
         with connection.cursor() as cursor:
             sql = f"insert into categories (name) values ('{name}')"
@@ -34,6 +35,16 @@ def add_category():
         return json.dumps({'error': f'could not add category: {e}'})
 
 
+@delete('/category/<id:int>')
+def delete_category(id):
+    try:
+        with connection.cursor() as cursor:
+            sql = f"delete from categories where id = '{id}'"
+            cursor.execute(sql)
+            connection.commit()
+            return json.dumps({"CAT_ID": id})
+    except Exception as e:
+        return json.dumps({'error': f'could not remove category: {e}'})
 
 
 @get("/products")
