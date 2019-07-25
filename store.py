@@ -21,6 +21,16 @@ def get_categories():
     except Exception as e:
         return json.dumps({'error': f'error with the db: {e}'})
 
+@get("/category/<id:int>/products")
+def get_products(id):
+    try:
+        with connection.cursor() as cursor:
+            sql = f"select * from products where category = '{id}'"
+            cursor.execute(sql)
+            return json.dumps({"PRODUCTS": cursor.fetchall()})
+    except Exception as e:
+        return json.dumps({'error': f'error with the db: {e}'})
+
 
 @get("/admin")
 def admin_portal():
