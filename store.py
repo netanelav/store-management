@@ -11,6 +11,16 @@ connection = pymysql.connect(host="localhost",
                              cursorclass=pymysql.cursors.DictCursor)
 
 
+@get("/categories")
+def get_categories():
+    try:
+        with connection.cursor() as cursor:
+            sql = "select * from category"
+            cursor.execute(sql)
+            return json.dumps(cursor.fetchall())
+    except Exception as e:
+        return json.dumps({'error': f'error with the db: {e}'})
+
 
 @get("/admin")
 def admin_portal():
