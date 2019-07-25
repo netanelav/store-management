@@ -15,11 +15,25 @@ connection = pymysql.connect(host="localhost",
 def get_categories():
     try:
         with connection.cursor() as cursor:
-            sql = "select * from category"
+            sql = "select * from categories"
             cursor.execute(sql)
             return json.dumps({"CATEGORIES": cursor.fetchall()})
     except Exception as e:
         return json.dumps({'error': f'error with the db: {e}'})
+
+@post("/category")
+def add_category():
+    name = request.json.get("name")
+    try:
+        with connection.cursor() as cursor:
+            sql = f"insert into categories (name) values ('{name}')"
+            cursor.execute(sql)
+            connection.commit()
+            return json.dumps({"CAT_ID": cursor.lastrowid, "CODE": 201})
+    except Exception as e:
+        return json.dumps({'error': f'could not add category: {e}'})
+
+
 
 
 @get("/products")

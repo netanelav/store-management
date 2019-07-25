@@ -1,7 +1,7 @@
 create database store;
 use store;
 
-create table category (
+create table categories (
 id int auto_increment,
 name varchar(30) unique,
 primary key (id));
@@ -17,5 +17,5 @@ favorite ENUM("0","1"),
 primary key (id));
 
 	
-select * from category;
+select * from categories;
 select * from products;
