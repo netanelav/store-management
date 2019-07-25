@@ -3,10 +3,18 @@ from sys import argv
 import json
 import pymysql
 
+connection = pymysql.connect(host="localhost",
+                             user="root",
+                             password="mysql",
+                             db="store",
+                             charset="utf8",
+                             cursorclass=pymysql.cursors.DictCursor)
+
+
+
 @get("/admin")
 def admin_portal():
-	return template("pages/admin.html")
-
+    return template("pages/admin.html")
 
 
 @get("/")
@@ -29,4 +37,5 @@ def images(filename):
     return static_file(filename, root='images')
 
 
-run(host='0.0.0.0', port=argv[1])
+# run(host='0.0.0.0', port=argv[1])
+run(host="localhost", port=7000, debug=True, reloder=True)
