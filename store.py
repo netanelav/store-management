@@ -21,8 +21,20 @@ def get_categories():
     except Exception as e:
         return json.dumps({'error': f'error with the db: {e}'})
 
+
+@get("/products")
+def get_products():
+    try:
+        with connection.cursor() as cursor:
+            sql = "select * from products"
+            cursor.execute(sql)
+            return json.dumps({"PRODUCTS": cursor.fetchall()})
+    except Exception as e:
+        return json.dumps({'error': f'error with the db: {e}'})
+
+
 @get("/category/<id:int>/products")
-def get_products(id):
+def products_by_category(id):
     try:
         with connection.cursor() as cursor:
             sql = f"select * from products where category = '{id}'"

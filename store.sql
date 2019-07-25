@@ -6,7 +6,7 @@ id int auto_increment,
 name varchar(30) unique,
 primary key (id));
 
-create table product (
+create table products (
 id int auto_increment,
 title varchar(30),
 description varchar(200),
@@ -18,4 +18,4 @@ primary key (id));
 
 	
 select * from category;
-select * from product;
+select * from products;
