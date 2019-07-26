@@ -111,6 +111,18 @@ def add_or_edit_product():
         return json.dumps({'error': f'could not add/edit product: {e}'})
 
 
+@delete('/product/<id:int>')
+def delete_product(id):
+    try:
+        with connection.cursor() as cursor:
+            sql = f"delete from products where id = '{id}'"
+            cursor.execute(sql)
+            connection.commit()
+            return json.dumps({"STATUS": "SUCCESS", "CODE": 201})
+    except Exception as e:
+        return json.dumps({'error': f'could not delete product: {e}'})
+
+
 @get("/admin")
 def admin_portal():
     return template("pages/admin.html")
