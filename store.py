@@ -19,7 +19,23 @@ def get_categories():
             cursor.execute(sql)
             return json.dumps({"STATUS": "SUCCESS", "CATEGORIES": cursor.fetchall()})
     except Exception as e:
-        return json.dumps( {"STATUS": "ERROR", "MSG": f"{e}"})
+        return json.dumps({"STATUS": "ERROR", "MSG": f"{e}"})
+
+
+@get("/category/<id:int>/products")
+def products_by_category(id):
+    try:
+        with connection.cursor() as cursor:
+            sql = f"select * from products where category = '{id}' order by id asc, favorite desc"
+            cursor.execute(sql)
+            return json.dumps({"STATUS": "SUCCESS", "MSG": "Products fetched", "PRODUCTS": cursor.fetchall()})
+    except Exception as e:
+        if response.status_code == 404:
+            return json.dumps({"STATUS": "ERROR", "MSG": "category not found"})
+        elif response.status_code == 500:
+            return json.dumps({"STATUS": "ERROR", "MSG": "Internal error", "CODE": 500})
+        else:
+            return json.dumps({"STATUS": "ERROR", "MSG": f"{e}"})
 
 
 @post("/category")
@@ -61,14 +77,13 @@ def delete_category(id):
             return json.dumps({"STATUS": "ERROR", "MSG": f"{e}"})
 
 
-
 @get("/products")
 def get_products():
     try:
         with connection.cursor() as cursor:
             sql = "select * from products"
             cursor.execute(sql)
-            return json.dumps({"STATUS": "SUCCESS","MSG": "Products fetched", "PRODUCTS": cursor.fetchall()})
+            return json.dumps({"STATUS": "SUCCESS", "MSG": "Products fetched", "PRODUCTS": cursor.fetchall()})
     except Exception as e:
         return json.dumps({"STATUS": "ERROR", "MSG": f"Internal Error{e}"})
 
@@ -79,7 +94,7 @@ def get_product(id):
         with connection.cursor() as cursor:
             sql = f"select * from products where id = '{id}'"
             cursor.execute(sql)
-            return json.dumps({"STATUS": "SUCCESS","MSG": "The product was fetched successfully", "PRODUCT": cursor.fetchall()})
+            return json.dumps({"STATUS": "SUCCESS", "MSG": "The product was fetched successfully", "PRODUCT": cursor.fetchall()})
     except Exception as e:
         if response.status_code == 404:
             return json.dumps({"STATUS": "ERROR", "MSG": "Product was not found"})
@@ -87,22 +102,6 @@ def get_product(id):
             return json.dumps({"STATUS": "ERROR", "MSG": "Internal error"})
         else:
             return json.dumps({"STATUS": "ERROR", "MSG": f"{e}"})
-
-
-@get("/category/<id:int>/products")
-def products_by_category(id):
-    try:
-        with connection.cursor() as cursor:
-            sql = f"select * from products where category = '{id}'"
-            cursor.execute(sql)
-            return json.dumps({"STATUS": "SUCCESS", "MSG": "Products fetched" ,"PRODUCTS": cursor.fetchall()})
-    except Exception as e:
-        if response.status_code == 404:
-            return json.dumps({"STATUS": "ERROR", "MSG": "category not found"})
-        elif response.status_code == 500:
-            return json.dumps({"STATUS": "ERROR", "MSG": "Internal error", "CODE": 500})
-        else:
-        return json.dumps({"STATUS": "ERROR", "MSG": f"{e}"})
 
 
 @post('/product')
@@ -157,7 +156,6 @@ def delete_product(id):
             return json.dumps({"STATUS": "ERROR", "MSG": "Internal error"})
         else:
             return json.dumps({"STATUS": "ERROR", "MSG": f"{e}"})
-
 
 
 @get("/admin")
