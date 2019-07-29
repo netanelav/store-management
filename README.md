@@ -6,10 +6,13 @@ Store Backoffice is a web application that allows store management, users can br
 
 In this assignment, we received a code that had partial front-end implementation and needed to understand the code flow, implement the entire server-side, create all the endpoints, and make the app work.
 
+Deployment with Heroku, check the admin section in - https://store-backoffice.herokuapp.com/admin
+
 The assignment is based on the following subjects:
 
 * Python
 * MySQL Database
 * OOP & Abstract Classes
 * Bottle
+* Heroku
 
